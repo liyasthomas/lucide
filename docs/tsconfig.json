@@ -1,7 +1,7 @@
 {
   "extends": "./.nitro/types/tsconfig.json",
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
     "noEmit": true
