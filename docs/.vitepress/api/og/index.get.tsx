@@ -1,5 +1,4 @@
-import { eventHandler, setResponseHeader, defaultContentType, sendWebResponse } from 'h3'
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from '@vercel/og/dist/index.edge';
 // import OGImage from './OGImage.tsx';
 import React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
