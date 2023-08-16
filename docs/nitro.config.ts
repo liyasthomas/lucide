@@ -7,6 +7,9 @@ export default defineNitroConfig({
   experimental: {
     wasm: true,
   },
+  rollupConfig: {
+    external: ['@resvg/resvg-wasm/index_bg.wasm'],
+  },
   esbuild: {
     options: {
       // jsx: 'transform',

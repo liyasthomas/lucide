@@ -1,7 +1,7 @@
 import { eventHandler, setResponseHeader, defaultContentType } from 'h3';
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
 
-const initialization = fetch('https://unpkg.com/@resvg/resvg-wasm/index_bg.wasm').then((res) =>
+const initialization = fetch('https://unpkg.com/@vercel/og/dist/resvg.wasm').then((res) =>
   initWasm(res)
 );
 

@@ -1,5 +1,4 @@
-import { ImageResponse } from '@vercel/og/dist/index.edge';
-// import OGImage from './OGImage.tsx';
+import { ImageResponse } from '@vercel/og';
 import React from 'react'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 
@@ -32,5 +31,5 @@ export default eventHandler((event) => {
     },
   )
 
-  return sendWebResponse(event, response)
+  return sendWebResponse(event, response as Response)
 })
