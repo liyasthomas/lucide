@@ -1,13 +1,10 @@
 import { eventHandler, setResponseHeader, defaultContentType } from 'h3';
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-
-const initialization = fetch('https://unpkg.com/@vercel/og/dist/resvg.wasm').then((res) =>
-  initWasm(res)
-);
+import wasm from './resvg.wasm?module'
 
 export default eventHandler(async (event) => {
   const { params = {} } = event.context;
-  await initialization;
+  await initWasm(res);
 
   const imageSize = 96;
   const [iconSizeString, svgData] = params.data.split('/');

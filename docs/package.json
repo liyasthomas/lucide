@@ -15,6 +15,7 @@
     "prebuild:relatedIcons": "node ../scripts/writeIconRelatedIcons.mjs",
     "prebuild:iconDetails": "node ../scripts/writeIconDetails.mjs",
     "postbuild:vercelJson": "node ../scripts/writeVercelOutput.mjs",
+    "postbuild:copyWasm": "cp ./.vitepress/api/gh-icon/dpi/resvg.wasm ./.vercel/output/functions/__nitro.func/resvg.wasm",
     "dev": "npx nitropack dev",
     "build:api": "npx nitropack build",
     "prebuild": "pnpm prebuild:iconNodes && pnpm prebuild:metaJson && pnpm prebuild:releaseJson && pnpm prebuild:relatedIcons && pnpm prebuild:iconDetails",
@@ -25,15 +26,16 @@
   "license": "ISC",
   "devDependencies": {
     "h3": "^1.8.0",
-    "nitropack": "2.5.2",
+    "nitropack": "npm:nitropack-edge@latest",
     "node-fetch": "2",
+    "rollup-plugin-copy": "^3.4.0",
     "vitepress": "1.0.0-rc.4"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.0.1",
     "@headlessui/vue": "^1.7.13",
-    "@vercel/og": "^0.5.11",
     "@resvg/resvg-wasm": "^2.4.1",
+    "@vercel/og": "^0.5.11",
     "@vueuse/components": "^10.1.0",
     "@vueuse/core": "^10.1.0",
     "element-to-path": "^1.2.1",

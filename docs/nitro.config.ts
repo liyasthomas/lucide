@@ -1,3 +1,5 @@
+import copy from 'rollup-plugin-copy'
+
 export default defineNitroConfig({
   preset: 'vercel-edge',
   srcDir: '.vitepress',
@@ -8,7 +10,21 @@ export default defineNitroConfig({
     wasm: true,
   },
   rollupConfig: {
-    external: ['@resvg/resvg-wasm/index_bg.wasm'],
+    external: [
+      './yoga.wasm?module',
+      './resvg.wasm?module',
+      './noto-sans-v27-latin-regular.ttf'
+    ],
+    plugins: [
+      copy({
+        targets: [
+          { src: './node_modules/@vercel/og/dist/yoga.wasm', dest: './.vercel/output/functions/__nitro.func' },
+          { src: './node_modules/@vercel/og/dist/resvg.wasm', dest: './.vercel/output/functions/__nitro.func' },
+          { src: './node_modules/@vercel/og/dist/noto-sans-v27-latin-regular.ttf', dest: './.vercel/output/static' },
+          { src: './node_modules/@vercel/og/dist/noto-sans-v27-latin-regular.ttf', dest: './.vercel/output/functions/__nitro.func' },
+        ]
+      })
+    ]
   },
   esbuild: {
     options: {
