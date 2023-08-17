@@ -12,3 +12,9 @@ declare module "*.data.ts" {
 
 declare module "*.wasm" {
 }
+
+declare const resvg_wasm: RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
+
+declare module "node:module" {
+  function createRequire(filename: string): NodeRequire;
+}

@@ -1,7 +1,6 @@
 import { eventHandler, setResponseHeader, defaultContentType } from 'h3'
 import { renderToString } from 'react-dom/server'
 import { createElement } from 'react'
-import SvgPreview from '../../../lib/SvgPreview/index.tsx';
 import createLucideIcon, { IconNode } from 'lucide-react/src/createLucideIcon'
 import { parseSync } from 'svgson';
 
