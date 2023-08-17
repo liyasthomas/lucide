@@ -8,7 +8,7 @@ export default defineNitroConfig({
     '/api/**': { cors: false },
   },
   rollupConfig: {
-    external: ['@resvg/resvg-wasm/index_bg.wasm', './resvg.wasm?module'],
+    external: ['@resvg/resvg-wasm/index_bg.wasm', './index_bg.wasm?module'],
     plugins: [
       copy({
         targets: [
