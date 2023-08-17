@@ -8,3 +8,7 @@ declare module "*.data.ts" {
 
   export { data };
 }
+
+
+declare module "*.wasm" {
+}

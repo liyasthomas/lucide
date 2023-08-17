@@ -1,4 +1,6 @@
-import copy from 'rollup-plugin-copy'
+import copy from 'rollup-plugin-copy';
+import { wasm } from '@rollup/plugin-wasm';
+import replace from '@rollup/plugin-replace';
 
 export default defineNitroConfig({
   preset: 'vercel-edge',
@@ -6,23 +8,26 @@ export default defineNitroConfig({
   routeRules: {
     '/api/**': { cors: false },
   },
-  experimental: {
-    wasm: true,
-  },
+  // experimental: {
+  //   wasm: true,
+  // },
   rollupConfig: {
-    external: [
-      './yoga.wasm?module',
-      './resvg.wasm?module',
-      './noto-sans-v27-latin-regular.ttf'
-    ],
+    external: ['@resvg/resvg-wasm/index_bg.wasm', './resvg.wasm?module'],
     plugins: [
       copy({
         targets: [
           { src: './node_modules/@vercel/og/dist/yoga.wasm', dest: './.vercel/output/functions/__nitro.func' },
-          { src: './node_modules/@vercel/og/dist/resvg.wasm', dest: './.vercel/output/functions/__nitro.func' },
-          { src: './node_modules/@vercel/og/dist/noto-sans-v27-latin-regular.ttf', dest: './.vercel/output/static' },
-          { src: './node_modules/@vercel/og/dist/noto-sans-v27-latin-regular.ttf', dest: './.vercel/output/functions/__nitro.func' },
+          { src: './node_modules/@vercel/og/dist/resvg.wasm', dest: './.vercel/output/functions/__nitro.func' }
         ]
+      }),
+      wasm({
+        sync: ['@resvg/resvg-wasm/index_bg.wasm']
+      }),
+      replace({
+        include: ['./**/*.ts'],
+        '/* WASM_IMPORT */': 'import resvg_wasm from "./resvg.wasm?module";',
+        delimiters: ['', ''],
+        preventAssignment: false,
       })
     ]
   },

@@ -1,10 +1,24 @@
 import { eventHandler, setResponseHeader, defaultContentType } from 'h3';
 import { Resvg, initWasm } from '@resvg/resvg-wasm';
-import wasm from './resvg.wasm?module'
+import fs from "fs";
+import module from 'node:module'
+/* WASM_IMPORT */
+
+let wasm
+
+if (process.env.NODE_ENV === 'development') {
+  const require = module.createRequire(import.meta.url)
+
+  wasm = fs.readFileSync(require.resolve("@resvg/resvg-wasm/index_bg.wasm"))
+} else {
+  wasm = resvg_wasm
+}
+
+var initializedResvg = initWasm(wasm);
 
 export default eventHandler(async (event) => {
   const { params = {} } = event.context;
-  await initWasm(res);
+  await initializedResvg
 
   const imageSize = 96;
   const [iconSizeString, svgData] = params.data.split('/');
@@ -33,39 +47,42 @@ export default eventHandler(async (event) => {
   const pngData = resvg.render();
   const pngBuffer = Buffer.from(pngData.asPng());
 
-  defaultContentType(event, 'image/svg+xml');
+  // defaultContentType(event, 'image/svg+xml');
+  defaultContentType(event, 'image/png');
   setResponseHeader(event, 'Cache-Control', 'public,max-age=31536000');
 
-  return `
-<svg xmlns="http://www.w3.org/2000/svg" width="${imageSize}" height="${imageSize}" viewBox="0 0 ${imageSize} ${imageSize}">
-  <style>
-    @media screen and (prefers-color-scheme: light) {
-      #fallback-background { fill: transparent; }
-    }
-    @media screen and (prefers-color-scheme: dark) {
-      #fallback-background { fill: transparent; }
-      rect { fill: #fff; }
-    }
-  </style>
-  <mask id="mask">
-    <image
-      width="${imageSize}"
-      height="${imageSize}"
-      href="data:image/png;base64,${pngBuffer.toString('base64')}"
-      image-rendering="pixelated"
-    />
-  </mask>
-  <rect
-    id="fallback-background"
-    width="${imageSize}"
-    height="${imageSize}" ry="${imageSize / 24}"
-    fill="#fff"
-  />
-  <rect
-    width="${imageSize}"
-    height="${imageSize}"
-    fill="#000"
-    mask="url(#mask)"
-  />
-</svg>`;
+  return pngBuffer
+
+//   return `
+// <svg xmlns="http://www.w3.org/2000/svg" width="${imageSize}" height="${imageSize}" viewBox="0 0 ${imageSize} ${imageSize}">
+//   <style>
+//     @media screen and (prefers-color-scheme: light) {
+//       #fallback-background { fill: transparent; }
+//     }
+//     @media screen and (prefers-color-scheme: dark) {
+//       #fallback-background { fill: transparent; }
+//       rect { fill: #fff; }
+//     }
+//   </style>
+//   <mask id="mask">
+//     <image
+//       width="${imageSize}"
+//       height="${imageSize}"
+//       href="data:image/png;base64,${pngBuffer.toString('base64')}"
+//       image-rendering="pixelated"
+//     />
+//   </mask>
+//   <rect
+//     id="fallback-background"
+//     width="${imageSize}"
+//     height="${imageSize}" ry="${imageSize / 24}"
+//     fill="#fff"
+//   />
+//   <rect
+//     width="${imageSize}"
+//     height="${imageSize}"
+//     fill="#000"
+//     mask="url(#mask)"
+//   />
+// </svg>`;
 });
