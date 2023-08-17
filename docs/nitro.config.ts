@@ -17,7 +17,7 @@ export default defineNitroConfig({
       }),
       replace({
         include: ['./**/*.ts'],
-        '/* WASM_IMPORT */': 'import resvg_wasm from "./resvg.wasm?module";',
+        '/* WASM_IMPORT */': 'import resvg_wasm from "./index_bg.wasm?module";',
         delimiters: ['', ''],
         preventAssignment: false,
       })
